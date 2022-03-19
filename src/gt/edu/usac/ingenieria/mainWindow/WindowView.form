@@ -26,7 +26,7 @@
               <text value="Ruta_de_archivo"/>
             </properties>
           </component>
-          <component id="258ea" class="javax.swing.JTextField" binding="tiitleTextField">
+          <component id="258ea" class="javax.swing.JTextField" binding="tittleTextField">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -156,17 +156,18 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="23dc" class="javax.swing.JRadioButton" binding="ascendenteRadioButton" default-binding="true">
+              <component id="23dc" class="javax.swing.JRadioButton" binding="ascendantRadioButton">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <selected value="true"/>
                   <text value="Ascendente"/>
                 </properties>
               </component>
-              <component id="c584b" class="javax.swing.JRadioButton" binding="descendenteRadioButton" default-binding="true">
+              <component id="c584b" class="javax.swing.JRadioButton" binding="descendentRadioButton">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Descendente"/>
@@ -184,15 +185,16 @@
             <children>
               <component id="227f9" class="javax.swing.JRadioButton" binding="quickSortRadioButton" default-binding="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <selected value="true"/>
                   <text value="Quick Sort"/>
                 </properties>
               </component>
               <component id="2f4b1" class="javax.swing.JRadioButton" binding="insertionSortRadioButton" default-binding="true">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Insertion Sort"/>
@@ -219,10 +221,21 @@
             </constraints>
             <properties>
               <text value="Reporte"/>
+              <visible value="false"/>
             </properties>
           </component>
         </children>
       </grid>
     </children>
   </grid>
+  <buttonGroups>
+    <group name="behavior">
+      <member id="23dc"/>
+      <member id="c584b"/>
+    </group>
+    <group name="algorithms">
+      <member id="2f4b1"/>
+      <member id="227f9"/>
+    </group>
+  </buttonGroups>
 </form>
