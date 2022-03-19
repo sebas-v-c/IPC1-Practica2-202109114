@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="algoritmos:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/algoritmos_jar</output-path>
+    <root id="archive" name="algoritmos.jar">
+      <element id="module-output" name="algoritmos" />
+      <element id="extracted-dir" path="$USER_HOME$/bin/java-libs/jfreechart-1.5.3.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
