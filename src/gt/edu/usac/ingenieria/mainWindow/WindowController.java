@@ -1,5 +1,8 @@
 package gt.edu.usac.ingenieria.mainWindow;
 
+import gt.edu.usac.ingenieria.algorithms.InsertionSort;
+import gt.edu.usac.ingenieria.algorithms.QuickSort;
+import gt.edu.usac.ingenieria.execution.ExecutionInfo;
 import gt.edu.usac.ingenieria.mainWindow.chartController.ChartController;
 
 import javax.swing.*;
@@ -16,12 +19,14 @@ public class WindowController {
     private WindowView view;
     private ChartController chartController;
     private String filePath;
-    private String algoritm;
+    private String algorithm;
     private double totalTime;
     private int pasosTotales;
+    private ExecutionInfo execInfo;
 
-    public WindowController(WindowView view) {
+    public WindowController(WindowView view, ExecutionInfo execInfo) {
         this.view = view;
+        this.execInfo = execInfo;
         // Temporalmente mientras no haya Jfrechart
         view.setGenChartButtonEnabled(false);
         // Add listener to the view
@@ -38,8 +43,25 @@ public class WindowController {
     private void createAlgorithms() {
         view.setButtonsLock(false);
 
+        algorithm = view.getSelectedAlgorithm();
+
+        switch (algorithm) {
+            case "QuickSort" -> {
+                QuickSort quickSort = new QuickSort(countries, values, view.getSelectedBehavior(), execInfo);
+                new Thread(quickSort, "algorithm").start();
+                SortingInfo qSortingInfo = new SortingInfo(this, execInfo);
+                new Thread(qSortingInfo, "infoText").start();
+            }
+            case "InsertionSort" -> {
+                InsertionSort insertionSort = new InsertionSort(countries, values, view.getSelectedBehavior(), execInfo);
+                new Thread(insertionSort, "algorithm").start();
+                SortingInfo iSortingInfo = new SortingInfo(this, execInfo);
+                new Thread(iSortingInfo, "infoText").start();
+            }
+        }
+
+
     }
-    // TODO Connect html report listener
     // TODO Update stopwatch label and call chart update
 
     public void readCSV(BufferedReader csvReader) throws IOException {
@@ -75,8 +97,8 @@ public class WindowController {
     public String[] getCountries() {
         return countries;
     }
-    public String getAlgoritm() {
-        return algoritm;
+    public String getAlgorithm() {
+        return algorithm;
     }
     public WindowView getView() {
         return view;
@@ -85,10 +107,16 @@ public class WindowController {
         return view.getFilePathText();
     }
     public double getTotalTime() {
-        return totalTime;
+        return (double) execInfo.getTotalTime() / 1_000_000_000;
     }
-    public int getPasosTotales() {
-        return pasosTotales;
+    public long getPasosTotales() {
+        return execInfo.getMoves();
+    }
+    public void setTimeText(String timeText) {
+        view.setStopWatchText(timeText);
+    }
+    public void setMovesText(String moves) {
+        view.setStepsText(moves);
     }
 
     // TODO complete this function

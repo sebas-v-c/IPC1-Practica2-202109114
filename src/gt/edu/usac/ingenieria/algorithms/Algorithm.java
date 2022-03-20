@@ -1,42 +1,51 @@
 package gt.edu.usac.ingenieria.algorithms;
 
+import gt.edu.usac.ingenieria.execution.ExecutionInfo;
+import gt.edu.usac.ingenieria.mainWindow.SortingInfo;
 import gt.edu.usac.ingenieria.mainWindow.WindowController;
 
 public abstract class Algorithm implements Runnable{
-    private String[] countries;
-    private int[] values;
-    private long movements;
-    private WindowController controller;
-    private double totalTime = 0;
+    protected String[] countries;
+    protected int[] values;
+    protected boolean ascendent;
+    protected long movements;
+    protected ExecutionInfo execInfo;
+    protected long totalTime = 0;
+    protected long startTime = 0;
+    protected long endTime = 0;
 
 
     // TODO constructor method
+    Algorithm(String[] countries, int[] values, boolean ascendent, ExecutionInfo execInfo) {
+        this.countries = countries;
+        this.values = values;
+        this.ascendent = ascendent;
+        this.execInfo = execInfo;
+    }
     // Pass a WindowController object to update the view
 
 
     @Override
     public abstract void run();
 
-    protected abstract void sort();
-
-    protected void stepFinished(double startTime, double endTime) {
+    protected void stepFinished(long startTime, long endTime) {
         this.totalTime = endTime - startTime;
-        this.controller.moveFinished(getCountries(), getValues(), getMovements(), endTime - startTime);
+//        this.controller.moveFinished(getCountries(), getValues(), getMovements(), endTime - startTime);
     }
 
-    private double getTotalTime() {
+    protected double getTotalTime() {
         return this.totalTime;
     }
 
-    public String[] getCountries() {
+    protected String[] getCountries() {
         return countries;
     }
 
-    public int[] getValues() {
+    protected int[] getValues() {
         return values;
     }
 
-    public long getMovements() {
+    protected long getMovements() {
         return movements;
     }
 }

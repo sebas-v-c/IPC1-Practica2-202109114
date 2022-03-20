@@ -31,6 +31,10 @@ public class WindowView extends JFrame{
         this.setVisible(true);
     }
 
+    public void setReportButtonVisible(boolean b) {
+        reportButton.setVisible(b);
+    }
+
     // add a ChartPanel to the JChartPanel
     public void setChartPanel(ChartPanel chart) {
         if (chartPanel.getComponent(0) != null) {
@@ -62,13 +66,13 @@ public class WindowView extends JFrame{
     }
 
     // radio buttons logic
-    public int getSelectedBehavior() {
+    public boolean getSelectedBehavior() {
         if (ascendantRadioButton.isSelected()) {
             // Returns the first option
-            return 0;
+            return true;
         }
         // Returns the second option
-        return 1;
+        return false;
     }
 
     public String getSelectedAlgorithm() {
