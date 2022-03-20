@@ -17,20 +17,13 @@ public class Timer implements Runnable{
     public void run() {
         while (running) {
             synchronized (pauseLock) {
-                if (!running) { // may have changed while waiting to
-                    // synchronize on pauseLock
+                if (!running) {
                     break;
                 }
                 if (paused) {
                     try {
                         synchronized (pauseLock) {
-                            pauseLock.wait(); // will cause this Thread to block until
-                            // another thread calls pauseLock.notifyAll()
-                            // Note that calling wait() will
-                            // relinquish the synchronized lock that this
-                            // thread holds on pauseLock so another thread
-                            // can acquire the lock to call notifyAll()
-                            // (link with explanation below this code)
+                            pauseLock.wait();
                         }
                     } catch (InterruptedException ex) {
                         break;
@@ -55,14 +48,10 @@ public class Timer implements Runnable{
 
     public void stop() {
         running = false;
-        // you might also want to interrupt() the Thread that is
-        // running this Runnable, too, or perhaps call:
         resume();
-        // to unblock
     }
 
     public void pause() {
-        // you may want to throw an IllegalStateException if !running
         paused = true;
     }
 

@@ -10,23 +10,48 @@ public class BubbleSort extends Algorithm {
         this.controller = controller;
     }
 
-    public void sort() {
+    @Override
+    public void run() {
         execInfo.setSorted(false);
         sort(execInfo);
         execInfo.setSorted(true);
         controller.moveFinished(countries, values, execInfo);
     }
 
-    public void sort(ExecutionInfo execInfo, ){
-        int n = arr.length;
-        for (int i = 0; i < n-1; i++)
-            for (int j = 0; j < n-i-1; j++)
-                if (arr[j] > arr[j+1])
-                {
-                    // swap arr[j+1] and arr[j]
-                    int temp = arr[j];
-                    arr[j] = arr[j+1];
-                    arr[j+1] = temp;
+    public void sort(ExecutionInfo execInfo){
+        if (ascendent) {
+            int n = values.length;
+            for (int i = 0; i < n-1; i++) {
+                for (int j = 0; j < n - i - 1; j++) {
+                    if (values[j] > values[j + 1]) {
+                        swap(values, j, j + 1);
+                        execInfo.setMoves(1);
+                        controller.moveFinished(countries, values, execInfo);
+                    }
                 }
+            }
+        } else {
+            int n = values.length;
+            for (int i = 0; i < n-1; i++) {
+                for (int j = 0; j < n - i - 1; j++) {
+                    if (values[j] < values[j + 1]) {
+                        swap(values, j, j + 1);
+                        execInfo.setMoves(1);
+                        controller.moveFinished(countries, values, execInfo);
+                    }
+                }
+            }
+        }
     }
+
+
+    private void swap(int[] values, int left, int right) {
+        int tempInt = values[left];
+        String tempString = countries[left];
+        values[left] = values[right];
+        countries[left] = countries[right];
+        values[right] = tempInt;
+        countries[right] = tempString;
+    }
+
 }

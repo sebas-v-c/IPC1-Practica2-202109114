@@ -4,7 +4,7 @@ import gt.edu.usac.ingenieria.execution.ExecutionInfo;
 import gt.edu.usac.ingenieria.mainWindow.SortingInfo;
 import gt.edu.usac.ingenieria.mainWindow.WindowController;
 
-public abstract class Algorithm{
+public abstract class Algorithm implements Runnable{
     protected String[] countries;
     protected int[] values;
     protected boolean ascendent;
@@ -23,6 +23,7 @@ public abstract class Algorithm{
         this.execInfo = execInfo;
     }
     // Pass a WindowController object to update the view
+
 
     protected void stepFinished(long startTime, long endTime) {
         this.totalTime = endTime - startTime;

@@ -10,7 +10,9 @@ public class QuickSort extends Algorithm{
         this.controller = controller;
     }
 
-    public void sort() {
+
+    @Override
+    public void run() {
         execInfo.setSorted(false);
         sort(execInfo, values, 0, values.length-1);
         execInfo.setSorted(true);

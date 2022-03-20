@@ -81,7 +81,7 @@ public class WindowView extends JFrame{
         if (quickSortRadioButton.isSelected()) {
             return "QuickSort";
         } else if (insertionSortRadioButton.isSelected()) {
-            return "InsertionSort";
+            return "BubbleSort";
         } else {
             return "Invalid";
         }

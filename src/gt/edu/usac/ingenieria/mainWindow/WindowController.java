@@ -26,6 +26,7 @@ public class WindowController {
     private long totalSteps;
     private ExecutionInfo execInfo;
     private Timer timer;
+    private boolean chartCreated;
 
     public WindowController(WindowView view, ExecutionInfo execInfo) {
         this.view = view;
@@ -39,6 +40,7 @@ public class WindowController {
         view.addReportButtonListener(new ReportListener(this));
 //        connectTable(view);
         this.timer = new Timer(this);
+        chartCreated = false;
     }
 
 
@@ -54,14 +56,14 @@ public class WindowController {
                 QuickSort quickSort = new QuickSort(countries, values, view.getSelectedBehavior(), execInfo, this);
                 this.timer = new Timer(this);
                 new Thread(timer).start();
-                quickSort.sort();
+                new Thread(quickSort).start();
 
             }
-            case "InsertionSort" -> {
+            case "BubbleSort" -> {
                 BubbleSort bubbleSort = new BubbleSort(countries, values, view.getSelectedBehavior(), execInfo, this);
                 this.timer = new Timer(this);
                 new Thread(timer).start();
-                bubbleSort.sort();
+                new Thread(bubbleSort).start();
             }
         }
 
@@ -81,9 +83,13 @@ public class WindowController {
 
 
         // TODO dibujar tabla
+        if (chartCreated) {
+            chartController.createChart(values);
+            view.setChartPanel(chartController.getChart());
+        }
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -198,8 +204,9 @@ public class WindowController {
     private class GenChartListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
+            chartCreated = true;
             chartController = new ChartController();
-            chartController.createChart();
+            chartController.createChart(values);
             view.setChartPanel(chartController.getChart());
         }
     }
