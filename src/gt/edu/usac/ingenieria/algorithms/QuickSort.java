@@ -11,7 +11,10 @@ public class QuickSort extends Algorithm{
     }
 
     public void sort() {
+        execInfo.setSorted(false);
         sort(execInfo, values, 0, values.length-1);
+        execInfo.setSorted(true);
+        controller.moveFinished(countries, values, execInfo);
     }
 
     private void sort(ExecutionInfo execInfo, int[] values, int left, int right){

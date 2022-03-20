@@ -1,8 +1,10 @@
 package gt.edu.usac.ingenieria.mainWindow;
 
-import gt.edu.usac.ingenieria.algorithms.InsertionSort;
+import com.sun.source.tree.TryTree;
+import gt.edu.usac.ingenieria.algorithms.BubbleSort;
 import gt.edu.usac.ingenieria.algorithms.QuickSort;
 import gt.edu.usac.ingenieria.execution.ExecutionInfo;
+import gt.edu.usac.ingenieria.execution.Timer;
 import gt.edu.usac.ingenieria.mainWindow.chartController.ChartController;
 
 import javax.swing.*;
@@ -20,9 +22,10 @@ public class WindowController {
     private ChartController chartController;
     private String filePath;
     private String algorithm;
-    private double totalTime;
-    private int pasosTotales;
+    private long totalTime;
+    private long totalSteps;
     private ExecutionInfo execInfo;
+    private Timer timer;
 
     public WindowController(WindowView view, ExecutionInfo execInfo) {
         this.view = view;
@@ -35,23 +38,30 @@ public class WindowController {
         view.addSortButtonListener(new SortListener());
         view.addReportButtonListener(new ReportListener(this));
 //        connectTable(view);
+        this.timer = new Timer(this);
     }
 
 
 
-    // TODO Listener Create selected algorithm and lock buttons
     private void createAlgorithms() {
         view.setButtonsLock(false);
+        view.setReportButtonVisible(false);
 
         algorithm = view.getSelectedAlgorithm();
 
         switch (algorithm) {
             case "QuickSort" -> {
                 QuickSort quickSort = new QuickSort(countries, values, view.getSelectedBehavior(), execInfo, this);
+                this.timer = new Timer(this);
+                new Thread(timer).start();
                 quickSort.sort();
+
             }
             case "InsertionSort" -> {
-                InsertionSort insertionSort = new InsertionSort(countries, values, view.getSelectedBehavior(), execInfo);
+                BubbleSort bubbleSort = new BubbleSort(countries, values, view.getSelectedBehavior(), execInfo, this);
+                this.timer = new Timer(this);
+                new Thread(timer).start();
+                bubbleSort.sort();
             }
         }
 
@@ -59,20 +69,38 @@ public class WindowController {
     }
 
     public void moveFinished(String[] countries, int[] values, ExecutionInfo execInfo) {
-        // TODO slowly update the timer for 0.5 seconds
-        double execTime = execInfo.getTotalTime() / 1_000_000_000;
-        setMovesText(String.valueOf(execInfo.getMoves()));
-        setTimeText(String.valueOf(execTime));
-        System.out.println(execTime);
-        System.out.println(execInfo.getMoves());
+        timer.pause();
+
+        double execTime = ((double) timer.getElapseTime()) / 1_000_000_000;
+        String texto = "00:" + execTime + " s";
+        System.out.println(texto);
+        view.setStopWatchText(texto);
+        texto = String.valueOf(execInfo.getMoves());
+        System.out.println(texto);
+        view.setStepsText(texto);
 
 
+        // TODO dibujar tabla
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        totalSteps = execInfo.getMoves();
+        totalTime = timer.getElapseTime();
         if (execInfo.isSorted()) {
             view.setButtonsLock(true);
             view.setReportButtonVisible(true);
+            execInfo.resetStatus();
+            timer.resetTimer();
+            timer.pause();
+            timer.stop();
+        } else {
+            timer.resume();
         }
     }
-    // TODO Update stopwatch label and call chart update
 
     public void readCSV(BufferedReader csvReader) throws IOException {
         String row;
@@ -117,10 +145,10 @@ public class WindowController {
         return view.getFilePathText();
     }
     public double getTotalTime() {
-        return (double) execInfo.getTotalTime() / 1_000_000_000;
+        return (double) totalTime / 1_000_000_000;
     }
-    public long getPasosTotales() {
-        return execInfo.getMoves();
+    public long getTotalSteps() {
+        return totalSteps;
     }
     public void setTimeText(String timeText) {
         view.setStopWatchText(timeText);
@@ -145,14 +173,6 @@ public class WindowController {
         newArray[n] = newInt;
 
         return newArray;
-    }
-
-    public void sleepTime(long time) {
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     // Listeners classes

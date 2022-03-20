@@ -44,7 +44,7 @@ public class ExecutionInfo {
         return execTime;
     }
 
-    public double getTotalTime() {
+    public long getTotalTime() {
         return this.totalTime;
     }
 
@@ -59,5 +59,10 @@ public class ExecutionInfo {
 
     public void setMoves(long moves) {
         this.moves += moves;
+    }
+
+    public void resetStatus() {
+        this.moves = 0;
+        this.totalTime = 0;
     }
 }

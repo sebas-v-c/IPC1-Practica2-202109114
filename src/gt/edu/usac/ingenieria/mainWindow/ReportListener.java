@@ -51,7 +51,7 @@ public class ReportListener implements ActionListener {
             newLine.println("<h1>Sebastian Alejandro Vásquez Cartagena 202109114</h1>");
             newLine.println("<h2>" + controller.getAlgorithm() + "</h2>");
             newLine.println("<h3>" + controller.getTotalTime() + " s" + "</h3>");
-            newLine.println("<h3>" + controller.getPasosTotales() + "</h3>");
+            newLine.println("<h3>" + controller.getTotalSteps() + "</h3>");
             newLine.println("<br>");
 
             newLine.println("<h4>Tabla Ordenada</h4>");

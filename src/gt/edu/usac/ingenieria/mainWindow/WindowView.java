@@ -29,6 +29,8 @@ public class WindowView extends JFrame{
         this.setContentPane(mainPanel);
         this.pack();
         this.setVisible(true);
+        setStopWatchText("00:00 s");
+        setStepsText("00");
     }
 
     public void setReportButtonVisible(boolean b) {
