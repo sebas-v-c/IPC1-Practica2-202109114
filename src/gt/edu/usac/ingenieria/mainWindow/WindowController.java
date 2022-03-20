@@ -27,12 +27,13 @@ public class WindowController {
     private ExecutionInfo execInfo;
     private Timer timer;
     private boolean chartCreated;
+    private long delay;
 
     public WindowController(WindowView view, ExecutionInfo execInfo) {
         this.view = view;
         this.execInfo = execInfo;
         // Temporalmente mientras no haya Jfrechart
-        view.setGenChartButtonEnabled(false);
+//        view.setGenChartButtonEnabled(false);
         // Add listener to the view
         view.addGenChartButtonListener(new GenChartListener());
         view.addBrowseButtonListener(new BrowseListener());
@@ -70,30 +71,30 @@ public class WindowController {
 
     }
 
+    private int num = 0;
     public void moveFinished(String[] countries, int[] values, ExecutionInfo execInfo) {
         timer.pause();
+        num++;
 
-        double execTime = ((double) timer.getElapseTime()) / 1_000_000_000;
-        String texto = "00:" + execTime + " s";
-        System.out.println(texto);
-        view.setStopWatchText(texto);
-        texto = String.valueOf(execInfo.getMoves());
-        System.out.println(texto);
+        String texto = String.valueOf(execInfo.getMoves());
         view.setStepsText(texto);
 
-
-        // TODO dibujar tabla
-        if (chartCreated) {
-            chartController.createChart(values);
-            view.setChartPanel(chartController.getChart());
-        }
-
         try {
-            Thread.sleep(500);
+            Thread.sleep(150);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        if (chartCreated) {
+            view.createChart(values, countries);
+            view.setChartPanel();
+        }
+
+        try {
+            Thread.sleep(150);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         totalSteps = execInfo.getMoves();
         totalTime = timer.getElapseTime();
         if (execInfo.isSorted()) {
@@ -129,10 +130,10 @@ public class WindowController {
     }
 
     // Setters and getters
-    private void setCountries(String[] countries) {
+    public void setCountries(String[] countries) {
         this.countries = countries;
     }
-    private void setValues(int[] values) {
+    public void setValues(int[] values) {
         this.values = values;
     }
     public int[] getValues() {
@@ -194,7 +195,7 @@ public class WindowController {
 //                }
                 createAlgorithms();
             } catch (Exception e) {
-                view.showMessage("El archivo especificado no existe o es inválido");
+                view.showMessage("Alguno de los parametros es incorrecto");
                 view.setButtonsLock(true);
             }
         }
@@ -204,10 +205,17 @@ public class WindowController {
     private class GenChartListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            chartCreated = true;
-            chartController = new ChartController();
-            chartController.createChart(values);
-            view.setChartPanel(chartController.getChart());
+            try {
+                BufferedReader csvReader = new BufferedReader(new FileReader(getFilePath()));
+                readCSV(csvReader);
+                chartCreated = true;
+                view.createChart(values, countries);
+                view.setChartPanel();
+            } catch (Exception e) {
+                e.printStackTrace();
+                view.showMessage("No se ha especificado un archivo o es inválido");
+                view.setButtonsLock(true);
+            }
         }
     }
 

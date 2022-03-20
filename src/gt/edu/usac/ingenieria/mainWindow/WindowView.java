@@ -1,6 +1,11 @@
 package gt.edu.usac.ingenieria.mainWindow;
 
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +26,10 @@ public class WindowView extends JFrame{
     private JRadioButton insertionSortRadioButton;
     private JButton sortButton;
     private JButton reportButton;
+    private JTextField delay;
+    private JFreeChart chart;
+    private DefaultCategoryDataset dataset;
+    private boolean finished = false;
 
 
     public WindowView() {
@@ -33,16 +42,73 @@ public class WindowView extends JFrame{
         setStepsText("00");
     }
 
+    public String getDelay() {
+        return delay.getText();
+    }
+
+    public void createChart(int[] values, String[] countries) {
+        dataset = createDataset(values, countries);
+
+        this.chart = buildChart(dataset);
+    }
+
+    public void updateDataSet(int[] values, String[] countries) {
+        dataset = new DefaultCategoryDataset();
+        for (int i = 0; i < dataset.getColumnCount(); i++) {
+            dataset.setValue(values[i], "Y_VALUES", countries[i]);
+        }
+        chart = buildChart(dataset);
+        chartPanel.removeAll();
+        setChartPanel();
+    }
+
+
+    private DefaultCategoryDataset createDataset(int[] values, String[] countries) {
+        dataset = null;
+        dataset = new DefaultCategoryDataset();
+
+//        int num = 0;
+        for (int i = 0; i < values.length; i++) {
+//            for (int j = 0; j < dataset.getColumnCount(); j++) {
+//                if (countries[i].equals(dataset.getColumnKey(j))) {
+//                    num++;
+//                }
+//            }
+            dataset.setValue(values[i], "Y_VALUES", countries[i] + i);
+//            if (num != 0) {
+//                num = 0;
+//            } else {
+//                dataset.setValue(values[i], "Y_VALUES", countries[i]);
+//            }
+        }
+        return dataset;
+    }
+
+    private JFreeChart buildChart(CategoryDataset dataset) {
+        return ChartFactory.createBarChart(
+                "VALORES",
+                "PAISES",
+                "VALORES",
+                dataset,
+                PlotOrientation.VERTICAL,
+                false, true, false);
+    }
+
+    public JFreeChart getChart() {
+        return chart;
+    }
     public void setReportButtonVisible(boolean b) {
         reportButton.setVisible(b);
     }
 
     // add a ChartPanel to the JChartPanel
-    public void setChartPanel(ChartPanel chart) {
-        if (chartPanel.getComponent(0) != null) {
-            chartPanel.remove(0);
-        }
-        chartPanel.add(chart);
+    public void setChartPanel() {
+        chartPanel.removeAll();
+        ChartPanel chartPane = new ChartPanel(chart);
+        chartPane.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        chartPane.setBackground(Color.white);
+        chartPanel.add(chartPane);
+        chartPanel.revalidate();
     }
 
 

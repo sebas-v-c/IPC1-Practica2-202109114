@@ -16,6 +16,8 @@ public class QuickSort extends Algorithm{
         execInfo.setSorted(false);
         sort(execInfo, values, 0, values.length-1);
         execInfo.setSorted(true);
+        controller.setValues(values);
+        controller.setCountries(countries);
         controller.moveFinished(countries, values, execInfo);
     }
 
@@ -86,5 +88,7 @@ public class QuickSort extends Algorithm{
         countries[left] = countries[right];
         values[right] = tempInt;
         countries[right] = tempString;
+        controller.setCountries(countries);
+        controller.setValues(values);
     }
 }

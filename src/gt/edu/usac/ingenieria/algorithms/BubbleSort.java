@@ -15,6 +15,8 @@ public class BubbleSort extends Algorithm {
         execInfo.setSorted(false);
         sort(execInfo);
         execInfo.setSorted(true);
+        controller.setCountries(countries);
+        controller.setValues(values);
         controller.moveFinished(countries, values, execInfo);
     }
 
@@ -26,6 +28,8 @@ public class BubbleSort extends Algorithm {
                     if (values[j] > values[j + 1]) {
                         swap(values, j, j + 1);
                         execInfo.setMoves(1);
+                        controller.setCountries(countries);
+                        controller.setValues(values);
                         controller.moveFinished(countries, values, execInfo);
                     }
                 }
@@ -52,6 +56,8 @@ public class BubbleSort extends Algorithm {
         countries[left] = countries[right];
         values[right] = tempInt;
         countries[right] = tempString;
+        controller.setCountries(countries);
+        controller.setValues(values);
     }
 
 }
