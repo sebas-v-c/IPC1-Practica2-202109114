@@ -47,20 +47,30 @@ public class WindowController {
 
         switch (algorithm) {
             case "QuickSort" -> {
-                QuickSort quickSort = new QuickSort(countries, values, view.getSelectedBehavior(), execInfo);
-                new Thread(quickSort, "algorithm").start();
-                SortingInfo qSortingInfo = new SortingInfo(this, execInfo);
-                new Thread(qSortingInfo, "infoText").start();
+                QuickSort quickSort = new QuickSort(countries, values, view.getSelectedBehavior(), execInfo, this);
+                quickSort.sort();
             }
             case "InsertionSort" -> {
                 InsertionSort insertionSort = new InsertionSort(countries, values, view.getSelectedBehavior(), execInfo);
-                new Thread(insertionSort, "algorithm").start();
-                SortingInfo iSortingInfo = new SortingInfo(this, execInfo);
-                new Thread(iSortingInfo, "infoText").start();
             }
         }
 
 
+    }
+
+    public void moveFinished(String[] countries, int[] values, ExecutionInfo execInfo) {
+        // TODO slowly update the timer for 0.5 seconds
+        double execTime = execInfo.getTotalTime() / 1_000_000_000;
+        setMovesText(String.valueOf(execInfo.getMoves()));
+        setTimeText(String.valueOf(execTime));
+        System.out.println(execTime);
+        System.out.println(execInfo.getMoves());
+
+
+        if (execInfo.isSorted()) {
+            view.setButtonsLock(true);
+            view.setReportButtonVisible(true);
+        }
     }
     // TODO Update stopwatch label and call chart update
 
@@ -119,9 +129,6 @@ public class WindowController {
         view.setStepsText(moves);
     }
 
-    // TODO complete this function
-    public void moveFinished(String[] countries, int[] values, long movements, double delta) {
-    }
 
     public String[] addElement(String[] array, String newString) {
         int n =  array.length;
@@ -138,6 +145,14 @@ public class WindowController {
         newArray[n] = newInt;
 
         return newArray;
+    }
+
+    public void sleepTime(long time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     // Listeners classes

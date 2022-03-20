@@ -17,18 +17,25 @@ public class SortingInfo implements Runnable{
         synchronized (execInfo) {
             try {
                 while (!execInfo.isSorted()) {
-                    // TODO slowly update the timer for 0.5 seconds
+                    execInfo.setAlgorithmsFinished(false);
+                    execInfo.setDisplayFinished(false);
+                    while (!execInfo.isAlgorithmsFinished()) {
+                        execInfo = execInfo;
+                    }
                     double execTime = execInfo.getTotalTime() / 1_000_000_000;
+                    controller.setMovesText(String.valueOf(execInfo.getMoves()));
                     controller.setTimeText(String.valueOf(execTime));
+                    System.out.println(execTime);
+                    System.out.println(execInfo.getMoves());
 
                     // TODO update the table
 
 
+                    execInfo.setDisplayFinished(true);
                     execInfo.notifyAll();
-                    execInfo.wait();
                 }
                 // Wait until is called
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

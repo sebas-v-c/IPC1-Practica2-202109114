@@ -10,9 +10,15 @@ public class InsertionSort extends Algorithm {
     @Override
     public void run() {
         synchronized (execInfo) {
-            sort(execInfo);
-        }
-    }
+            try {
+//                sort(execInfo, values, 0, values.length-1);
+                execInfo.notifyAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            execInfo.setSorted(true);
+        }    }
 
     public void sort(ExecutionInfo execInfo){
 

@@ -10,6 +10,7 @@ public class App {
     public static void main(String[] args) {
         // Set locale in spanish
         Locale.setDefault(new Locale("es"));
+        System.out.println("HOLA");
         // Inicializar variables
         WindowView view = new WindowView();
         ExecutionInfo execInfo = new ExecutionInfo(0, 0);

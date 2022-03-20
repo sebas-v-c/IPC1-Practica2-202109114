@@ -5,6 +5,8 @@ public class ExecutionInfo {
     private long totalTime;
     private long moves;
     private boolean sorted;
+    private boolean algorithmsFinished = false;
+    private boolean displayFinished = false;
 
 
     public ExecutionInfo(long execTime, long moves) {
@@ -12,6 +14,22 @@ public class ExecutionInfo {
         this.moves = moves;
         totalTime = 0;
         sorted = false;
+    }
+
+    public boolean isAlgorithmsFinished() {
+        return algorithmsFinished;
+    }
+
+    public void setAlgorithmsFinished(boolean algorithmsFinished) {
+        this.algorithmsFinished = algorithmsFinished;
+    }
+
+    public boolean isDisplayFinished() {
+        return displayFinished;
+    }
+
+    public void setDisplayFinished(boolean displayFinished) {
+        this.displayFinished = displayFinished;
     }
 
     public boolean isSorted() {

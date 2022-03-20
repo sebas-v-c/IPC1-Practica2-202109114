@@ -4,7 +4,7 @@ import gt.edu.usac.ingenieria.execution.ExecutionInfo;
 import gt.edu.usac.ingenieria.mainWindow.SortingInfo;
 import gt.edu.usac.ingenieria.mainWindow.WindowController;
 
-public abstract class Algorithm implements Runnable{
+public abstract class Algorithm{
     protected String[] countries;
     protected int[] values;
     protected boolean ascendent;
@@ -23,10 +23,6 @@ public abstract class Algorithm implements Runnable{
         this.execInfo = execInfo;
     }
     // Pass a WindowController object to update the view
-
-
-    @Override
-    public abstract void run();
 
     protected void stepFinished(long startTime, long endTime) {
         this.totalTime = endTime - startTime;
@@ -47,5 +43,9 @@ public abstract class Algorithm implements Runnable{
 
     protected long getMovements() {
         return movements;
+    }
+
+    public ExecutionInfo getExecInfo() {
+        return execInfo;
     }
 }

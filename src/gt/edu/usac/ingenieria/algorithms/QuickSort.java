@@ -1,27 +1,20 @@
 package gt.edu.usac.ingenieria.algorithms;
 
 import gt.edu.usac.ingenieria.execution.ExecutionInfo;
+import gt.edu.usac.ingenieria.mainWindow.WindowController;
 
 public class QuickSort extends Algorithm{
-    public QuickSort(String[] countries, int[] values, boolean ascendent, ExecutionInfo executionInfo) {
+    private WindowController controller;
+    public QuickSort(String[] countries, int[] values, boolean ascendent, ExecutionInfo executionInfo, WindowController controller) {
         super(countries, values, ascendent, executionInfo);
+        this.controller = controller;
     }
 
-    @Override
-    public void run() {
-        synchronized (execInfo) {
-            try {
-                sort(execInfo, values, 0, values.length-1);
-                execInfo.notifyAll();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            execInfo.setSorted(true);
-        }
+    public void sort() {
+        sort(execInfo, values, 0, values.length-1);
     }
 
-    private void sort(ExecutionInfo execInfo, int[] values, int left, int right) throws InterruptedException {
+    private void sort(ExecutionInfo execInfo, int[] values, int left, int right){
         if (left >= right) {
             return;
         }
@@ -35,7 +28,7 @@ public class QuickSort extends Algorithm{
     }
 
 
-    private int division(int[] values, int pivot, int left, int right) throws InterruptedException {
+    private int division(int[] values, int pivot, int left, int right){
         if (ascendent) {
             while (left <= right) {
                 startTime = System.nanoTime();
@@ -53,8 +46,7 @@ public class QuickSort extends Algorithm{
                     endTime = System.nanoTime();
                     execInfo.setExecTime(endTime - startTime);
                     execInfo.setMoves(1);
-                    execInfo.notifyAll();
-                    execInfo.wait();
+                    controller.moveFinished(countries, values, execInfo);
                 }
             }
         } else {
@@ -74,8 +66,7 @@ public class QuickSort extends Algorithm{
                     endTime = System.nanoTime();
                     execInfo.setExecTime(endTime - startTime);
                     execInfo.setMoves(1);
-                    execInfo.notifyAll();
-                    execInfo.wait();
+                    controller.moveFinished(countries, values, execInfo);
                 }
             }
         }

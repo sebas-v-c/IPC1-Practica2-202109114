@@ -74,6 +74,8 @@ public class ReportListener implements ActionListener {
         } catch (Exception e) {
             controller.getView().showMessage("Ha habido un error escribiendo en el archivo");
         }
+
+        controller.getView().setReportButtonVisible(false);
     }
 
     private String crearTabla() {
