@@ -74,7 +74,7 @@ public class WindowView extends JFrame{
 //                    num++;
 //                }
 //            }
-            dataset.setValue(values[i], "Y_VALUES", countries[i] + i);
+            dataset.setValue(values[i], "Y_VALUES", (i) + ". " + countries[i]);
 //            if (num != 0) {
 //                num = 0;
 //            } else {
@@ -86,9 +86,9 @@ public class WindowView extends JFrame{
 
     private JFreeChart buildChart(CategoryDataset dataset) {
         return ChartFactory.createBarChart(
-                "VALORES",
-                "PAISES",
-                "VALORES",
+                getTittleText(),
+                "X_VALUES",
+                "Y_VALUES",
                 dataset,
                 PlotOrientation.VERTICAL,
                 false, true, false);
@@ -104,7 +104,9 @@ public class WindowView extends JFrame{
     // add a ChartPanel to the JChartPanel
     public void setChartPanel() {
         chartPanel.removeAll();
-        ChartPanel chartPane = new ChartPanel(chart);
+        ChartPanel chartPane = new ChartPanel(chart, this.getWidth(), 450, 500,
+                450, this.getWidth(), 450, true, true,
+                true, true, true, true);
         chartPane.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         chartPane.setBackground(Color.white);
         chartPanel.add(chartPane);
